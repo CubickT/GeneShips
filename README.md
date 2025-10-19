@@ -1,9 +1,9 @@
 # GeneShips
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+Made with [libGDX](https://libgdx.com/) generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and an empty `ApplicationAdapter`
-extension.
+2D genetic algorithm simulation about evolution of battleships, submarines and other swimming things.
+Features will be described later.
 
 ## Platforms
 
