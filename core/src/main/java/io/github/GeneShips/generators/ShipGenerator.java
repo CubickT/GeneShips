@@ -5,9 +5,6 @@ import io.github.GeneShips.entities.Ship;
 
 
 public class ShipGenerator {
-    float length, width;
-    float bowAngle;
-
 
     private float map(float value, float rangeS, float rangeE, float enRangeS, float enRangeE) {
         return enRangeS + (enRangeE - enRangeS) * ((value - rangeS) / (rangeE - rangeS));
@@ -23,6 +20,7 @@ public class ShipGenerator {
         genome[Ship.GEN_Length] = MathUtils.random(0F, 1F);
         genome[Ship.GEN_Width] = MathUtils.random(0F, 1F);
         genome[Ship.GEN_BowAngle] = MathUtils.random(0F, 1F);
+        genome[Ship.GEN_Engine] = MathUtils.random(0F, 1F);
         return genome;
     }
 

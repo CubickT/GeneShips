@@ -20,6 +20,14 @@ public class Main extends ApplicationAdapter {
     private ShapeRenderer shapeRenderer;
     private List<Ship> ships;
 
+    public float getTime() {
+        return time;
+    }
+
+    public float getDeltaTime() {
+        return Gdx.graphics.getDeltaTime();
+    }
+
     @Override
     public void create() {
         shapeRenderer = new ShapeRenderer();
@@ -27,7 +35,7 @@ public class Main extends ApplicationAdapter {
         shipRenderer = new ShipRenderer();
         ships = new ArrayList<>();
 
-        Gdx.app.log("Main", "Процедурный генератор кораблей запущен!");
+        Gdx.app.log("Main", "Generator has started!");
     }
 
     @Override
@@ -36,7 +44,8 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        time += Gdx.graphics.getDeltaTime();
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        time += deltaTime;
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             float mouseX = Gdx.input.getX();
@@ -44,9 +53,10 @@ public class Main extends ApplicationAdapter {
 
             Ship newShip = shipGenerator.createRandomShip(mouseX, mouseY);
             ships.add(newShip);
+        }
 
-            Gdx.app.log("SHIP", "Created new ship. Total: " + ships.size());
-            Gdx.app.log("SHIP_PARAMS", "Длина: " + newShip.getLength() + ", Ширина: " + newShip.getWidth() + ", Угол: " + newShip.getBowAngle());
+        for (Ship ship : ships) {
+            ship.shipUpdate(deltaTime);
         }
 
         for (Ship ship : ships) {
