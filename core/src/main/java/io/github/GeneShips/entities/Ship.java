@@ -1,12 +1,11 @@
 package io.github.GeneShips.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
+import io.github.GeneShips.Interfaces.ShipPhysProp;
+import io.github.GeneShips.Interfaces.ShipState;
+import io.github.GeneShips.MathUtils;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-public class Ship {
+public class Ship implements ShipPhysProp, ShipState {
 
 
     //    Индексы генов
@@ -35,96 +34,30 @@ public class Ship {
     private float thrust;
 
     private Engine engine;
+    private ShipPhysics shipPhysics;
 
 
     public Ship(float x, float y, float[] genome) {
         this.x = x;
         this.y = y;
-        this.rotation = 2;
+        this.rotation = 0;
         this.speed = 30;
         this.angularVel = 0;
 
         this.genome = genome;
         this.engine = new Engine(EngineType.fromGene(genome[GEN_Engine]));
+        this.shipPhysics = new ShipPhysics(this, this);
 
         Gdx.app.log("SHIP_DEBUG", "Длина: " + genome[GEN_Length] + " Ширина: " + genome[GEN_Width] + " Угол: " + genome[GEN_BowAngle]);
         Gdx.app.log("SHIP_DEBUG", "Ген двигателя: " + genome[GEN_Engine]);
         Gdx.app.log("SHIP_DEBUG", "Тип двигателя: " + EngineType.fromGene(genome[GEN_Engine]));
     }
 
-    private float map(float value, float rangeS, float rangeE, float enRangeS, float enRangeE) {
-        return enRangeS + (enRangeE - enRangeS) * ((value - rangeS) / (rangeE - rangeS));
-    }
-
     public void shipUpdate(float deltaTime) {
-        calcDrag();
-        caclThrust();
-
-        speed *= (1 - speedPenalty * deltaTime);
-        speed += thrust * deltaTime;
-
-        x += (float) (speed * cos(rotation) * deltaTime);
-        y += (float) (speed * sin(rotation) * deltaTime);
-
-        rotation += angularVel * deltaTime;
-
-//        МИНИМАЛЬНАЯ СКОРОСТЬ
-        if (Math.abs(speed) < 5f) speed = 0;
-        if (Math.abs(angularVel) < 0.01f) angularVel = 0;
-
+        shipPhysics.update(deltaTime);
     }
 
 //    ДВИГАТЕЛИ
-
-    public void caclThrust() {
-//        для отладки случаные импульсы
-        float throttle = MathUtils.random(0F, 100F);
-        this.thrust = engine.getAcceleration() * throttle;
-    }
-
-    public void calcDrag() {
-        float bowEfficiency = map(getBowAngle(), 0F, 1F, 0.1F, 0.95F);
-        float widthPenalty = map(genome[GEN_Width], 0F, 1F, 0.3F, 1.2F);
-
-        float baseDrag = 0.08F;
-
-        this.speedPenalty = baseDrag * widthPenalty / bowEfficiency;
-
-
-    }
-
-    public float getRotation() {
-        return rotation;
-    }
-
-//    ФИЗИКА
-
-    public float getSpeed() {
-        return speed;
-    }
-
-
-//    ГЕТТЕРЫ ИНФЫ ИЗ ГЕНОВ
-
-    public float getLength() {
-        return map(genome[GEN_Length], 0, 1, MIN_LENGTH, MAX_LENGTH);
-    }
-
-    public float getWidth() {
-        return map(genome[GEN_Width], 0, 1, MIN_WIDTH, MAX_WIDTH);
-    }
-
-    public float getBowAngle() {
-        return map(genome[GEN_BowAngle], 0F, 1F, MIN_BOW_ANGLE, MAX_BOW_ANGLE);
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
 
     public enum EngineType {
         STEAM(0.0f, 0.25f, 70, 0.4f, 0.9f, "Паровой"),
@@ -189,4 +122,82 @@ public class Ship {
             return operational;
         }
     }
+
+
+//    ИНТЕРФЕЙС ShipPhysProp
+
+
+//    ГЕТТЕРЫ ИНФЫ ИЗ ГЕНОВ
+
+    public float getLength() {
+        return MathUtils.map(genome[GEN_Length], 0, 1, MIN_LENGTH, MAX_LENGTH);
+    }
+
+    public float getWidth() {
+        return MathUtils.map(genome[GEN_Width], 0, 1, MIN_WIDTH, MAX_WIDTH);
+    }
+
+    public float getBowAngle() {
+        return MathUtils.map(genome[GEN_BowAngle], 0F, 1F, MIN_BOW_ANGLE, MAX_BOW_ANGLE);
+    }
+
+    @Override
+    public float getAcceleration() {
+        return engine.getAcceleration();
+    }
+
+    public float getMaxSpeed() {
+        return engine.getMaxSpeed();
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    //    СЕТТЕРЫ
+    @Override
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    @Override
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    @Override
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getAngularVel() {
+        return angularVel;
+    }
+
+    @Override
+    public void setAngularVel(float angularVel) {
+        this.angularVel = angularVel;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
 }

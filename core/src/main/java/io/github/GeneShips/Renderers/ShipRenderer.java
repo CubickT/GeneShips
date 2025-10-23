@@ -1,17 +1,14 @@
-package io.github.GeneShips;
+package io.github.GeneShips.Renderers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.GeneShips.entities.Ship;
 
+import static io.github.GeneShips.MathUtils.map;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class ShipRenderer {
-
-    private float map(float value, float rangeS, float rangeE, float enRangeS, float enRangeE) {
-        return enRangeS + (enRangeE - enRangeS) * ((value - rangeS) / (rangeE - rangeS));
-    }
 
     public void renderShip(Ship ship, ShapeRenderer shapeRenderer) {
 

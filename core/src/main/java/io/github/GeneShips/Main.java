@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import io.github.GeneShips.Renderers.ShipRenderer;
 import io.github.GeneShips.entities.Ship;
+import io.github.GeneShips.entities.ShipPhysics;
 import io.github.GeneShips.generators.ShipGenerator;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class Main extends ApplicationAdapter {
 
     private float time;
 
+    private ShipPhysics shipPhysics;
     private ShipRenderer shipRenderer;
     private ShipGenerator shipGenerator;
     private ShapeRenderer shapeRenderer;
