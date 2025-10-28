@@ -46,7 +46,7 @@ public class Ship implements ShipPhysProp, ShipState {
 
         this.genome = genome;
         this.engine = new Engine(EngineType.fromGene(genome[GEN_Engine]));
-        this.shipPhysics = new ShipPhysics(this, this);
+
 
         Gdx.app.log("SHIP_DEBUG", "Длина: " + genome[GEN_Length] + " Ширина: " + genome[GEN_Width] + " Угол: " + genome[GEN_BowAngle]);
         Gdx.app.log("SHIP_DEBUG", "Ген двигателя: " + genome[GEN_Engine]);
@@ -54,44 +54,17 @@ public class Ship implements ShipPhysProp, ShipState {
     }
 
     public void shipUpdate(float deltaTime) {
-        shipPhysics.update(deltaTime);
+        if (shipPhysics != null) {
+            shipPhysics.update(deltaTime);
+        } else {
+            Gdx.app.error("SHIP", "Physics is null for ship!");
+        }
     }
 
 //    ДВИГАТЕЛИ
 
-    public enum EngineType {
-        STEAM(0.0f, 0.25f, 70, 0.4f, 0.9f, "Паровой"),
-        DIESEL(0.25f, 0.5f, 90, 0.6f, 0.8f, "Дизельный"),
-        TURBINE(0.5f, 0.75f, 120, 0.8f, 0.6f, "Газотурбинный"),
-        NUCLEAR(0.75f, 1.0f, 150, 0.7f, 0.4f, "Ядерный");
-
-        public final float minGene, maxGene;
-        public final float maxSpeed, acceleration, reliability;
-        public final String name;
-
-        EngineType(float minGene, float maxGene, float maxSpeed, float acceleration, float reliability, String name) {
-            this.minGene = minGene;
-            this.maxGene = maxGene;
-            this.maxSpeed = maxSpeed;
-            this.acceleration = acceleration;
-            this.reliability = reliability;
-            this.name = name;
-        }
-
-        public static EngineType fromGene(float geneValue) {
-            // Обрабатываем граничный случай 1.0
-            if (geneValue == 1.0f) {
-                return NUCLEAR;
-            }
-
-            for (EngineType type : values()) {
-                if (geneValue >= type.minGene && geneValue < type.maxGene) {
-                    return type;
-                }
-            }
-            return STEAM;
-        }
-
+    public Engine getEngine() {
+        return engine;
     }
 
     public class Engine {
@@ -128,6 +101,10 @@ public class Ship implements ShipPhysProp, ShipState {
 
 
 //    ГЕТТЕРЫ ИНФЫ ИЗ ГЕНОВ
+
+    public void setPhysics(ShipPhysics physics) {
+        this.shipPhysics = physics;
+    }
 
     public float getLength() {
         return MathUtils.map(genome[GEN_Length], 0, 1, MIN_LENGTH, MAX_LENGTH);
@@ -196,8 +173,41 @@ public class Ship implements ShipPhysProp, ShipState {
         this.angularVel = angularVel;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public enum EngineType {
+        //min and max gene, max speed, acceleration, reliability
+        STEAM(0.0f, 0.25f, 70, 0.4f, 0.9f, "Паровой"),
+        DIESEL(0.25f, 0.5f, 90, 0.6f, 0.8f, "Дизельный"),
+        TURBINE(0.5f, 0.75f, 120, 0.8f, 0.6f, "Газотурбинный"),
+        NUCLEAR(0.75f, 1.0f, 150, 0.7f, 0.4f, "Ядерный");
+
+        public final float minGene, maxGene;
+        public final float maxSpeed, acceleration, reliability;
+        public final String name;
+
+        EngineType(float minGene, float maxGene, float maxSpeed, float acceleration, float reliability, String name) {
+            this.minGene = minGene;
+            this.maxGene = maxGene;
+            this.maxSpeed = maxSpeed;
+            this.acceleration = acceleration;
+            this.reliability = reliability;
+            this.name = name;
+        }
+
+        public static EngineType fromGene(float geneValue) {
+            // Обрабатываем граничный случай 1.0
+            if (geneValue == 1.0f) {
+                return NUCLEAR;
+            }
+
+            for (EngineType type : values()) {
+                if (geneValue >= type.minGene && geneValue < type.maxGene) {
+                    return type;
+                }
+            }
+            return STEAM;
+        }
+
     }
+
 
 }

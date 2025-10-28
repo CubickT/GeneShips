@@ -45,7 +45,7 @@ public class ShipRenderer {
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Color.GRAY);
 
         for (int i = 1; i < rotatedVertices.length - 1; i++) {
             shapeRenderer.triangle(
