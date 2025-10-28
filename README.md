@@ -2,34 +2,24 @@
 
 Made with [libGDX](https://libgdx.com/) generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-2D genetic algorithm simulation about evolution of battleships, submarines and other swimming things.
-Features will be described later.
+2D genetic algorithm simulation about evolution of battleships, submarines and other naval vessels. Watch as ships
+evolve through generations with realistic physics and tactical combat.
 
-## Platforms
+### Current status: Early development
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+### Planed features
 
-## Gradle
+- Genetic evolution of ship designs through natural selection
+- Naval battles with semi-realistic physics and collisions
+- Naturally achieved biodiversity
+- Tactical AI
+- Race mode for testing ship performance
+- Multiple gamemodes with different settings
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+## Created with:
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
-
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should
-be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+- IntelliJ IDEA
+- Java 8
+- **[libGDX](https://libgdx.com/)** - Java library for game development
+- **[Box2D](https://box2d.org/)** - 2D physics engine for realistic collisions
+- Gradle 
